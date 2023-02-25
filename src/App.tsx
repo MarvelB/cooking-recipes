@@ -1,3 +1,4 @@
+import NavBar from 'components/NavBar/NavBar';
 import Create from 'pages/Create/Create';
 import Home from 'pages/Home/Home';
 import Recipe from 'pages/Recipe/Recipe';
@@ -9,6 +10,8 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <NavBar />
+        
         <Switch>
           <Route path="/create">
             <Create />
