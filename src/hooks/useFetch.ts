@@ -4,7 +4,7 @@ export interface UseFetchType<T> {
     data: T;
     isLoading: boolean;
     error: string;
-    postData: (postData: T) => void;
+    postData: (data: T) => void;
 }
 
 interface PostDataOptions {
@@ -17,15 +17,15 @@ const useFetch = <T>(url: string, method = "GET"): UseFetchType<T> => {
     const [data, setData] = useState<T>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
-    const [options , setOptions] = useState<PostDataOptions>({});
+    const [options , setOptions] = useState<PostDataOptions | null>(null);
 
-    const postData = (postData: T) => {
+    const postData = (data: T) => {
         setOptions({
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(postData)
+            body: JSON.stringify(data)
         })
     }
 
