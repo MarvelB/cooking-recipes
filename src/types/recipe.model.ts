@@ -5,3 +5,5 @@ export interface RecipeModel {
     method: string;
     cookingTime: string;
 }
+
+export interface PostRecipeModel extends Omit<RecipeModel, "id"> {}
