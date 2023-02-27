@@ -1,4 +1,6 @@
+import useFetch from 'hooks/useFetch';
 import { useRef, useState } from 'react';
+import { PostRecipeModel, RecipeModel } from 'types';
 import './Create.css';
 
 interface CreateProps {}
@@ -12,9 +14,12 @@ const Create = ({ }: CreateProps) => {
   const [ingredients, setIngredients] = useState<string[]>([]);
   const ingredientInput = useRef<HTMLInputElement>(null);
 
+  const { postData, data, error } = useFetch<PostRecipeModel>("http://localhost:8000/recipes", "POST");
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(title, method, cookingTime, ingredients);
+
+    postData({title, cookingTime: cookingTime + ' minutes', ingredients, method});
   };
 
   const handleAddNewIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
