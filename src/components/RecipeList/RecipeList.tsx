@@ -7,6 +7,11 @@ interface RecipeListProps {
 }
 
 const RecipeList = ({ recipes }: RecipeListProps) => {
+
+  if (recipes.length == 0) {
+    return <div className="error">No recipes to load...</div>
+  }
+
   return (
     <div className="recipe-list">
       {recipes && recipes.map(recipe => (
