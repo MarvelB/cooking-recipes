@@ -1,5 +1,6 @@
 import useFetch from 'hooks/useFetch';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useHistory } from 'react-router';
 import { PostRecipeModel, RecipeModel } from 'types';
 import './Create.css';
 
@@ -14,6 +15,7 @@ const Create = ({ }: CreateProps) => {
   const [ingredients, setIngredients] = useState<string[]>([]);
   const ingredientInput = useRef<HTMLInputElement>(null);
 
+  const history = useHistory();
   const { postData, data, error } = useFetch<PostRecipeModel>("http://localhost:8000/recipes", "POST");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,6 +36,14 @@ const Create = ({ }: CreateProps) => {
     setNewIngredient("");
     ingredientInput.current?.focus();
   }
+
+  // Useeffect to redirect user after the data has been added
+  useEffect(() => {
+    if (data) { console.log(data)
+      history.push('/');
+    }
+
+  }, [data]);
 
   return (
     <div className="create">
