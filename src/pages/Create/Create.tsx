@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import './Create.css';
 
 interface CreateProps {}
@@ -8,11 +8,27 @@ const Create = ({ }: CreateProps) => {
   const [title, setTitle] = useState<string>("");
   const [method, setMethod] = useState<string>("");
   const [cookingTime, setCookingTime] = useState<string>("");
+  const [newIngredient, setNewIngredient] = useState<string>("");
+  const [ingredients, setIngredients] = useState<string[]>([]);
+  const ingredientInput = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(title, method, cookingTime);
+    console.log(title, method, cookingTime, ingredients);
   };
+
+  const handleAddNewIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const ing = newIngredient.trim();
+
+    if (ing && !ingredients.includes(ing)) {
+      setIngredients(prevIngs => [...prevIngs, ing]);
+    }
+
+    setNewIngredient("");
+    ingredientInput.current?.focus();
+  }
 
   return (
     <div className="create">
@@ -30,7 +46,21 @@ const Create = ({ }: CreateProps) => {
           />
         </label>
 
-        {/* Ingredients section */}
+        <label>
+          <span>Recipe ingredients:</span>
+          <div className="ingredients">
+            <input
+              type="text"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewIngredient(e.target.value)}
+              value={newIngredient}
+              ref={ingredientInput}
+            />
+            <button className="btn" onClick={handleAddNewIngredient}>add</button>
+          </div>
+        </label>
+        <p>
+          Current ingredients: {ingredients.map(ing => <em key={ing}>{ing}, </em>)}
+        </p>
 
         <label>
           <span>Recipe method:</span>
