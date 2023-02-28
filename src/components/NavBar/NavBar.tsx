@@ -1,15 +1,17 @@
 import SearchBar from 'components/SearchBar/SearchBar';
-import { ThemeContext } from 'context/ThemeContext';
-import { useContext } from 'react';
+import useTheme from 'hooks/useTheme';
+// import { ThemeContext } from 'context/ThemeContext';
+// import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { ThemeContextModel } from 'types';
+// import { ThemeContextModel } from 'types';
 import './NavBar.css';
 
 interface NavBarProps {}
 
 const NavBar = ({ }: NavBarProps) => {
 
-  const { color } = useContext<ThemeContextModel | null>(ThemeContext) as ThemeContextModel;
+  // const { color } = useContext<ThemeContextModel | null>(ThemeContext) as ThemeContextModel;
+  const { color } = useTheme();
 
   return (
     <div className="navbar" style={{background: color}}>
