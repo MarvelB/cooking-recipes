@@ -10,12 +10,12 @@ interface NavBarProps {}
 
 const NavBar = ({ }: NavBarProps) => {
 
-  // const { color } = useContext<ThemeContextModel | null>(ThemeContext) as ThemeContextModel;
-  const { color } = useTheme();
+  // const { color } = useContext<ThemeContextModel | null>(ThemeContext);
+  const { state, dispatch } = useTheme();
 
   return (
-    <div className="navbar" style={{background: color}}>
-      <nav>
+    <div className="navbar" style={{background: state.color}}>
+      <nav onClick={() => dispatch("pink")}>
         <Link to="/" className="brand">
           <h1>Cooking Recipes</h1>
         </Link>

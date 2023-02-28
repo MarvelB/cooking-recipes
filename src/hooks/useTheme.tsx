@@ -4,7 +4,10 @@ import { ThemeContextModel } from "types";
 
 const useTheme = () => {
 
-    const context = useContext<ThemeContextModel | null>(ThemeContext) as ThemeContextModel;
+    const context = useContext<{
+        state: ThemeContextModel,
+        dispatch: (color: string) => void
+    }>(ThemeContext);
 
     if (context === null) {
         throw new Error("useTheme() must be used inside a ThemeProvider");
