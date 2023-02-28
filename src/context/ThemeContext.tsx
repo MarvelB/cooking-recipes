@@ -1,8 +1,9 @@
 import { createContext, useReducer } from 'react';
-import { ThemeContextModel } from 'types';
+import { ThemeContextModel, ThemeState } from 'types';
 
 export enum ThemeActionKind {
     CHANGE_COLOR = 'CHANGE_COLOR',
+    CHANGE_MODE = 'CHANGE_MODE',    
 };
 
 interface ThemeAction {
@@ -10,8 +11,15 @@ interface ThemeAction {
     payload: string;
 }
 
-const initialState: ThemeContextModel = {
-    color: "#58249c"
+const initialState: ThemeState = {
+    color: "#58249c",
+    mode: "dark",
+}
+
+const initialContextState: ThemeContextModel =  {
+    state: initialState,
+    changeColor: (color: string) => {},
+    changeTheme: (mode: string) => {},
 }
 
 const themeReducer = (state: ThemeContextModel, action: ThemeAction) => {
@@ -19,16 +27,17 @@ const themeReducer = (state: ThemeContextModel, action: ThemeAction) => {
 
     switch(action.type) {
         case ThemeActionKind.CHANGE_COLOR:
-            newState = {...newState, color: action.payload}
+            newState.state = {...newState.state, color: action.payload};
+            break;
+        case ThemeActionKind.CHANGE_MODE:
+            newState.state = {...newState.state, mode: action.payload};
+            break;
     }
 
     return newState;
 }
 
-export const ThemeContext = createContext<{
-    state: ThemeContextModel,
-    dispatch: (color: string) => void
-}>({state: initialState, dispatch: (color: string) => {}});
+export const ThemeContext = createContext<ThemeContextModel>(initialContextState);
 
 interface ThemeProviderProps {
     children: JSX.Element[] | JSX.Element;
@@ -36,14 +45,18 @@ interface ThemeProviderProps {
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 
-    const [state, dispatch] = useReducer(themeReducer, initialState);
+    const [state, dispatch] = useReducer(themeReducer, initialContextState);
 
     const changeColor = (color: string) => {
         dispatch({ type: ThemeActionKind.CHANGE_COLOR, payload: color});
     }
 
+    const changeTheme = (mode: string) => {
+        dispatch({type: ThemeActionKind.CHANGE_MODE, payload: mode})
+    }
+
     return (
-        <ThemeContext.Provider value={{state: {...state}, dispatch: changeColor}}>
+        <ThemeContext.Provider value={{state: {...state.state}, changeColor, changeTheme}}>
             {children}
         </ThemeContext.Provider>
     )

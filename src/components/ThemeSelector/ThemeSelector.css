@@ -13,3 +13,13 @@
     margin-left: 15px;
     border-radius: 50%;
 }
+
+.theme-toggle {
+    margin-right: auto;
+}
+
+.theme-toggle img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
