@@ -1,4 +1,5 @@
 import NavBar from 'components/NavBar/NavBar';
+import ThemeSelector from 'components/ThemeSelector/ThemeSelector';
 import Create from 'pages/Create/Create';
 import Home from 'pages/Home/Home';
 import Recipe from 'pages/Recipe/Recipe';
@@ -11,6 +12,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <NavBar />
+
+        <ThemeSelector />
         
         <Switch>
           <Route path="/create">

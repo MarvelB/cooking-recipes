@@ -11,7 +11,7 @@ interface ThemeAction {
 }
 
 const initialState: ThemeContextModel = {
-    color: "blue"
+    color: "#58249c"
 }
 
 const themeReducer = (state: ThemeContextModel, action: ThemeAction) => {
