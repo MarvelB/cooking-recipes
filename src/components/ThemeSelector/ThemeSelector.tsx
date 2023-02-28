@@ -2,6 +2,7 @@ import useTheme from "hooks/useTheme";
 import "./ThemeSelector.css";
  // @ts-ignore: Cannot find module
 import modeIcon from "assets/mode-icon.svg";
+import ThemeOptions from "types/theme.enum";
 
 interface ThemeSelectorProps {}
 
@@ -12,7 +13,7 @@ const ThemeSelector = ({ }: ThemeSelectorProps) => {
   const { changeColor, changeTheme, state } = useTheme();
 
   const handleToggleTheme = () => {
-    changeTheme(state.mode === "dark" ? "light" : "dark");
+    changeTheme(state.mode === ThemeOptions.DARK ? ThemeOptions.LIGHT : ThemeOptions.DARK);
   }
 
   return (
@@ -23,7 +24,7 @@ const ThemeSelector = ({ }: ThemeSelectorProps) => {
           src={modeIcon}
           onClick={handleToggleTheme}
           alt="dark/light theme toggle icon"
-          style={{ filter: state.mode === "dark" ? "invert(100%)" : "invert(20%)"}}
+          style={{ filter: state.mode === ThemeOptions.DARK ? "invert(100%)" : "invert(20%)"}}
         />
       </div>
 

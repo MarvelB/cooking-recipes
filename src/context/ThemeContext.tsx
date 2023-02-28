@@ -1,5 +1,6 @@
 import { createContext, useReducer } from 'react';
 import { ThemeContextModel, ThemeState } from 'types';
+import ThemeOptions from 'types/theme.enum';
 
 export enum ThemeActionKind {
     CHANGE_COLOR = 'CHANGE_COLOR',
@@ -13,7 +14,7 @@ interface ThemeAction {
 
 const initialState: ThemeState = {
     color: "#58249c",
-    mode: "dark",
+    mode: ThemeOptions.DARK,
 }
 
 const initialContextState: ThemeContextModel =  {
@@ -30,7 +31,7 @@ const themeReducer = (state: ThemeContextModel, action: ThemeAction) => {
             newState.state = {...newState.state, color: action.payload};
             break;
         case ThemeActionKind.CHANGE_MODE:
-            newState.state = {...newState.state, mode: action.payload};
+            newState.state = {...newState.state, mode: action.payload as ThemeOptions};
             break;
     }
 
@@ -51,7 +52,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         dispatch({ type: ThemeActionKind.CHANGE_COLOR, payload: color});
     }
 
-    const changeTheme = (mode: string) => {
+    const changeTheme = (mode: ThemeOptions) => {
         dispatch({type: ThemeActionKind.CHANGE_MODE, payload: mode})
     }
 

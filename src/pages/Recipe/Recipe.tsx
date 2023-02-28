@@ -1,4 +1,5 @@
 import useFetch from 'hooks/useFetch';
+import useTheme from 'hooks/useTheme';
 import { useParams } from 'react-router';
 import { RecipeModel } from 'types';
 import './Recipe.css';
@@ -16,8 +17,10 @@ const Recipe = ({ }: RecipeProps) => {
 
   const {data: recipe, error, isLoading} = useFetch<RecipeModel>(url);
 
+  const { state } = useTheme();
+
   return (
-    <div className="recipe">
+    <div className={`recipe ${state.mode}`}>
       {error && <p className="error">{error}</p>}
       {isLoading && <p className="loading">Loading...</p>}
       {recipe && (
