@@ -1,5 +1,7 @@
-import useFetch from 'hooks/useFetch';
+// import useFetch from 'hooks/useFetch';
+import { projectFirestore } from 'firebase/config';
 import useTheme from 'hooks/useTheme';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { RecipeModel } from 'types';
 import './Recipe.css';
@@ -13,11 +15,30 @@ interface RecipeProps {}
 const Recipe = ({ }: RecipeProps) => {
 
   const {id} = useParams<RecipePathParams>();
-  const url = "http://localhost:8000/recipes/" + id;
+  // const url = "http://localhost:8000/recipes/" + id;
 
-  const {data: recipe, error, isLoading} = useFetch<RecipeModel>(url);
+  // const {data: recipe, error, isLoading} = useFetch<RecipeModel>(url);
 
   const { state } = useTheme();
+
+  const [recipe, setRecipe] = useState<RecipeModel>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    projectFirestore.collection("recipes").doc(id).get().then((doc) => {
+      if (doc.exists) {
+        setRecipe({id, ...doc.data()} as RecipeModel);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        setError("Could not find that recipe");
+      }
+    });
+
+  }, [id]);
 
   return (
     <div className={`recipe ${state.mode}`}>
