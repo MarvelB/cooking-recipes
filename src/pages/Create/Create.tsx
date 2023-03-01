@@ -1,4 +1,5 @@
-import useFetch from 'hooks/useFetch';
+// import useFetch from 'hooks/useFetch';
+import { projectFirestore } from 'firebase/config';
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import { PostRecipeModel, RecipeModel } from 'types';
@@ -16,12 +17,23 @@ const Create = ({ }: CreateProps) => {
   const ingredientInput = useRef<HTMLInputElement>(null);
 
   const history = useHistory();
-  const { postData, data, error } = useFetch<PostRecipeModel>("http://localhost:8000/recipes", "POST");
+  // const { postData, data, error } = useFetch<PostRecipeModel>("http://localhost:8000/recipes", "POST");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    postData({title, cookingTime: cookingTime + ' minutes', ingredients, method});
+    // postData({title, cookingTime: cookingTime + ' minutes', ingredients, method});
+
+    const newRecipe = {title, cookingTime: cookingTime + ' minutes', ingredients, method};
+
+    try {
+      await projectFirestore.collection("recipes").add(newRecipe);
+
+      history.push("/");
+    } catch (err) {
+      console.log(err);
+    }
+
   };
 
   const handleAddNewIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,12 +50,12 @@ const Create = ({ }: CreateProps) => {
   }
 
   // Useeffect to redirect user after the data has been added
-  useEffect(() => {
-    if (data) { console.log(data)
-      history.push('/');
-    }
+  // useEffect(() => {
+  //   if (data) { console.log(data)
+  //     history.push('/');
+  //   }
 
-  }, [data]);
+  // }, [data]);
 
   return (
     <div className="create">
@@ -96,7 +108,7 @@ const Create = ({ }: CreateProps) => {
           />
         </label>
 
-        <button className="btn">Submit</button>
+        <button className="button">Submit</button>
       </form>
     </div>
   );
