@@ -25,6 +25,10 @@ const Recipe = ({ }: RecipeProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    projectFirestore.collection("recipes").doc(id).update({title: "Something completely different"} as Partial<RecipeModel>)
+  }
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -52,6 +56,7 @@ const Recipe = ({ }: RecipeProps) => {
             {recipe.ingredients.map(ingredient => <li key={ingredient}>{ingredient}</li>)}
           </ul>
           <p className="method">{recipe.method}</p>
+          <button onClick={handleClick}>Update me</button>
         </>
       )}
     </div>
