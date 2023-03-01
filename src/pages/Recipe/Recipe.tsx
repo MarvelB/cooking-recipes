@@ -32,7 +32,7 @@ const Recipe = ({ }: RecipeProps) => {
   useEffect(() => {
     setIsLoading(true);
 
-    projectFirestore.collection("recipes").doc(id).get().then((doc) => {
+    const ubsusbcribe = projectFirestore.collection("recipes").doc(id).onSnapshot((doc) => {
       if (doc.exists) {
         setRecipe({id, ...doc.data()} as RecipeModel);
         setIsLoading(false);
@@ -41,6 +41,9 @@ const Recipe = ({ }: RecipeProps) => {
         setError("Could not find that recipe");
       }
     });
+
+    // Cleanup function
+    return () => ubsusbcribe();
 
   }, [id]);
 
@@ -56,7 +59,7 @@ const Recipe = ({ }: RecipeProps) => {
             {recipe.ingredients.map(ingredient => <li key={ingredient}>{ingredient}</li>)}
           </ul>
           <p className="method">{recipe.method}</p>
-          <button onClick={handleClick}>Update me</button>
+          {/* <button onClick={handleClick}>Update me</button> */}
         </>
       )}
     </div>
